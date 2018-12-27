@@ -1,4 +1,4 @@
-package com.helenice.cursomc.domain;
+package com.helenice.cursomc.domain.enums;
 
 public enum TipoCliente {
 	PESSOA_FISICA(1, "Pessoa Fisica"),
