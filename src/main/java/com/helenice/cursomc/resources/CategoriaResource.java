@@ -1,6 +1,7 @@
 package com.helenice.cursomc.resources;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.helenice.cursomc.domain.Categoria;
+import com.helenice.cursomc.dto.CategoriaDTO;
 import com.helenice.cursomc.services.CategoriaService;
 
 @RestController
@@ -21,10 +23,9 @@ public class CategoriaResource {
 	private CategoriaService service;
 	
 	@RequestMapping(method=RequestMethod.GET, value="/{id}")
-	public ResponseEntity<?> find(@PathVariable Integer id) {
-		Categoria obj = service.buscar(id);
+	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
+		Categoria obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
-//		return "REST está funcionando!";
 	}
 	
 	
@@ -35,4 +36,29 @@ public class CategoriaResource {
 		return ResponseEntity.created(uri).build();
 		
 	}
+	
+	@RequestMapping(method=RequestMethod.PUT, value="/{id}")
+	public ResponseEntity<Void> update( @RequestBody Categoria obj, @PathVariable Integer id){
+		obj.setId(id);
+		obj = service.update(obj);
+	
+		return ResponseEntity.noContent().build();
+		
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+
+	}
+	
+//	@RequestMapping(method=RequestMethod.GET)
+//	public ResponseEntity<List<CategoriaDTO>> findAll() {
+//		List<Categoria> list = service.findAll();
+////		List<CategoriaDTO> listDto  = list.stream().map(obj -> CategoriaDTO(obj))
+//		return ResponseEntity.ok().body(obj);
+//	}
+	
+	
 }
