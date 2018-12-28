@@ -1,9 +1,12 @@
 package com.helenice.cursomc.dto;
 
+import java.io.Serializable;
+
 import com.helenice.cursomc.domain.Categoria;
 
-public class CategoriaDTO {
+public class CategoriaDTO implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String nome;
 	

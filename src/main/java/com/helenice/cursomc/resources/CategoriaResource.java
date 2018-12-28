@@ -2,6 +2,8 @@ package com.helenice.cursomc.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -53,12 +55,12 @@ public class CategoriaResource {
 
 	}
 	
-//	@RequestMapping(method=RequestMethod.GET)
-//	public ResponseEntity<List<CategoriaDTO>> findAll() {
-//		List<Categoria> list = service.findAll();
-////		List<CategoriaDTO> listDto  = list.stream().map(obj -> CategoriaDTO(obj))
-//		return ResponseEntity.ok().body(obj);
-//	}
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
+		List<Categoria> list = service.findAll();
+		List<CategoriaDTO> listDto  = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
 	
 	
 }
