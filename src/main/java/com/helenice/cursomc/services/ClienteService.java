@@ -18,7 +18,9 @@ import com.helenice.cursomc.domain.Endereco;
 import com.helenice.cursomc.domain.enums.TipoCliente;
 import com.helenice.cursomc.dto.ClienteDTO;
 import com.helenice.cursomc.dto.ClienteNewDTO;
+import com.helenice.cursomc.repositories.CidadeRepository;
 import com.helenice.cursomc.repositories.ClienteRepository;
+import com.helenice.cursomc.repositories.EnderecoRepository;
 import com.helenice.cursomc.services.exceptions.DataIntegrityException;
 import com.helenice.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -28,6 +30,13 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repo;
 	
+	
+//	@Autowired
+//	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto nao encontrado! Id: " + id + " ,Tipo: " + Cliente.class.getName()));
@@ -36,7 +45,9 @@ public class ClienteService {
 	@Transactional
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
-		return repo.save(obj);
+		repo.save(obj);
+		enderecoRepository.saveAll(obj.getEnderecos());
+		return obj;
 	}
 	
 	public Cliente update(Cliente obj) {
@@ -56,7 +67,7 @@ public class ClienteService {
 		try {
 			repo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			 throw new DataIntegrityException("Não é possivel excluir, cliente contém referências!");
+			 throw new DataIntegrityException("Não é possivel excluir, cliente contém pedidos!");
 		}
 	}
 
@@ -76,14 +87,17 @@ public class ClienteService {
 	}
 	
 	public Cliente fromDTO( ClienteNewDTO objDto) {
-		Cliente cli=  new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()));
-	//Integer id, String logradouro, String numero, String complemento, String bairro, String cep, Cliente cliente,  Cidade cidade
-		Endereco end = new Endereco(null, objDto.getLogradouro(),objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, null);
+		Cliente cli =  new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()));
+		Cidade cid =  new Cidade(objDto.getCidadeId(),null, null);
+		Endereco end = new Endereco(null, objDto.getLogradouro(),objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid);
+		
+		cli.getEnderecos().add(end);
 		cli.getTelefones().add(objDto.getTelefone1());
-		if(objDto.getTelefone2()!=null) {
+		
+		if(objDto.getTelefone2() != null) {
 			cli.getTelefones().add(objDto.getTelefone2());
 		}
-		if(objDto.getTelefone3()!=null) {
+		if(objDto.getTelefone3() != null) {
 			cli.getTelefones().add(objDto.getTelefone3());
 		}
 		

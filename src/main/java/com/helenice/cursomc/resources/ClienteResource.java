@@ -39,14 +39,24 @@ public class ClienteResource {
 	}
 	
 	
+//	@RequestMapping(method=RequestMethod.POST)
+//	public ResponseEntity<Void> insert( @Valid  @RequestBody ClienteDTO objDto){
+//		Cliente  obj = service.fromDTO(objDto);
+//		obj = service.insert(obj);
+//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+//		return ResponseEntity.created(uri).build();
+//		
+//	}
+	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert( @Valid  @RequestBody ClienteDTO objDto){
+	public ResponseEntity<Void> insert( @Valid  @RequestBody ClienteNewDTO objDto){
 		Cliente  obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 		
 	}
+
 	
 	@RequestMapping(method=RequestMethod.PUT, value="/{id}")
 	public ResponseEntity<Void> update( @Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id){
@@ -84,13 +94,5 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert( @Valid  @RequestBody ClienteNewDTO objDto){
-		Cliente  obj = service.fromDTO(objDto);
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();
-		
-	}
-
+	
 }
