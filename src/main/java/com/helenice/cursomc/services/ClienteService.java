@@ -18,7 +18,6 @@ import com.helenice.cursomc.domain.Endereco;
 import com.helenice.cursomc.domain.enums.TipoCliente;
 import com.helenice.cursomc.dto.ClienteDTO;
 import com.helenice.cursomc.dto.ClienteNewDTO;
-import com.helenice.cursomc.repositories.CidadeRepository;
 import com.helenice.cursomc.repositories.ClienteRepository;
 import com.helenice.cursomc.repositories.EnderecoRepository;
 import com.helenice.cursomc.services.exceptions.DataIntegrityException;
