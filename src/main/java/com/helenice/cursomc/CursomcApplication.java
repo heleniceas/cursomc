@@ -21,6 +21,7 @@ import com.helenice.cursomc.domain.PagamentoComCartao;
 import com.helenice.cursomc.domain.Pedido;
 import com.helenice.cursomc.domain.Produto;
 import com.helenice.cursomc.domain.enums.EstadoPagamento;
+import com.helenice.cursomc.domain.enums.Perfil;
 import com.helenice.cursomc.domain.enums.TipoCliente;
 import com.helenice.cursomc.repositories.CategoriaRepository;
 import com.helenice.cursomc.repositories.CidadeRepository;
@@ -140,15 +141,25 @@ public class CursomcApplication implements CommandLineRunner {
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3, c4));
 		
 		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "37294137838", TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("senha"));
+		
 		cli1.getTelefones().addAll(Arrays.asList("55135684","953570422"));
+		
+		Cliente cli2 = new Cliente(null, "Ana Silva", "ana_gama@gmail.com", "85809296017", TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("senha"));
+		cli2.getTelefones().addAll(Arrays.asList("36554552","953689548"));
+		cli2.addPerfil(Perfil.ADMIN);
+		
 	
 		Endereco end1 = new Endereco(null, "Rua das Flores", "300", "Apartamento 303", "Jardim", "05854180", cli1, c2);
 		Endereco end2 = new Endereco(null, "Avenida Matos", "100", "casa", "centro", "05854180", cli1, c1);
+		Endereco end3 = new Endereco(null, "Avenida Jaguare", "2106", "casa", "lapa", "05832189", cli2, c1);
 		
 		
 		cli1.getEnderecos().addAll(Arrays.asList(end1, end2));
+		
+		cli2.getEnderecos().addAll(Arrays.asList(end3));
 		clienteRepository.save(cli1);
-		enderecoRepository.saveAll(Arrays.asList(end1,end2));
+		clienteRepository.save(cli2);
+		enderecoRepository.saveAll(Arrays.asList(end1,end2, end3));
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
