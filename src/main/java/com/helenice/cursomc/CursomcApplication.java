@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.helenice.cursomc.domain.Categoria;
 import com.helenice.cursomc.domain.Cidade;
@@ -33,7 +34,9 @@ import com.helenice.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner {
-
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	
@@ -136,7 +139,7 @@ public class CursomcApplication implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(est1, est2, est3));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3, c4));
 		
-		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "37294137838", TipoCliente.PESSOA_FISICA);
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "37294137838", TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("senha"));
 		cli1.getTelefones().addAll(Arrays.asList("55135684","953570422"));
 	
 		Endereco end1 = new Endereco(null, "Rua das Flores", "300", "Apartamento 303", "Jardim", "05854180", cli1, c2);
